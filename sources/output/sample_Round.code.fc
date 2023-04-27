@@ -1,0 +1,156 @@
+#pragma version =0.4.3;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "sample_Round.headers.fc";
+#include "sample_Round.stdlib.fc";
+#include "sample_Round.storage.fc";
+
+;;
+;; Contract Round functions
+;;
+
+(slice, int, cell, int) $Round$_contract_init(int $_round, slice $_contract) impure inline_ref {
+    var (($self'source_address, $self'round, $self'user_list, $self'balance)) = (null(), null(), null(), null());
+    $self'round = $_round;
+    $self'source_address = $_contract;
+    $self'balance = 0;
+    return ($self'source_address, $self'round, $self'user_list, $self'balance);
+}
+
+((slice, int, cell, int), cell) $Round$_fun_get_user_record((slice, int, cell, int) $self) impure inline_ref {
+    var (($self'source_address, $self'round, $self'user_list, $self'balance)) = $self;
+    return (($self'source_address, $self'round, $self'user_list, $self'balance), $self'user_list);
+}
+
+((slice, int, cell, int), int) $Round$_fun_balance_reward((slice, int, cell, int) $self) impure inline_ref {
+    var (($self'source_address, $self'round, $self'user_list, $self'balance)) = $self;
+    return (($self'source_address, $self'round, $self'user_list, $self'balance), $self'balance);
+}
+
+((slice, int, cell, int), int) $Round$_fun_msgValue((slice, int, cell, int) $self, int $msgValue) impure inline_ref {
+    var (($self'source_address, $self'round, $self'user_list, $self'balance)) = $self;
+    int $tonBalanceBeforeMsg = (__tact_my_balance() - $msgValue);
+    int $storageFee = (30000000 - min($tonBalanceBeforeMsg, 30000000));
+    $msgValue = ($msgValue - ($storageFee + 30000000));
+    return (($self'source_address, $self'round, $self'user_list, $self'balance), $msgValue);
+}
+
+;;
+;; Receivers of a Contract Round
+;;
+
+(((slice, int, cell, int)), ()) $Round$_internal_binary_Join((slice, int, cell, int) $self, (slice) $msg) impure inline {
+    var ($self'source_address, $self'round, $self'user_list, $self'balance) = $self;
+    var ($msg'participator) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(55192, ( __tact_slice_eq_bits($self'source_address, $ctx'sender) ));
+    throw_unless(18265, null?(__tact_dict_get_slice_int($self'user_list, 267, $msg'participator, 257)));
+    int $fwdFee = ($Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw)) + $Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw)));
+    int $input = (($self'source_address, $self'round, $self'user_list, $self'balance)~$Round$_fun_msgValue($ctx'value) - $fwdFee);
+    $self'user_list~__tact_dict_set_slice_int(267, $msg'participator, $input, 257);
+    $self'balance = ($self'balance + $input);
+    return (($self'source_address, $self'round, $self'user_list, $self'balance), ());
+}
+
+((slice, int, cell, int), ()) $Round$_internal_text_5eac5dfca94b966759e4c199ed74ce7ad8f058d2fc66be491b1068968013b138((slice, int, cell, int) $self) impure inline {
+    var ($self'source_address, $self'round, $self'user_list, $self'balance) = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(55192, ( __tact_slice_eq_bits($self'source_address, $ctx'sender) ));
+    $global_send($SendParameters$_constructor_to_value_mode_bounce($self'source_address, 0, (2 + 128), false));
+    return (($self'source_address, $self'round, $self'user_list, $self'balance), ());
+}
+
+;;
+;; Get methods of a Contract Round
+;;
+
+_ %get_user_record() method_id(77209) {
+    var self = $Round$_contract_load();
+    var res = self~$Round$_fun_get_user_record();
+    return res;
+}
+
+_ %balance_reward() method_id(125604) {
+    var self = $Round$_contract_load();
+    var res = self~$Round$_fun_balance_reward();
+    return res;
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128,
+        "org.ton.deploy.lazy.v0"H >> 128,
+        "org.ton.chain.workchain.v0"H >> 128
+    );
+}
+
+_ get_abi_ipfs() method_id {
+    return "ipfs://QmWKAZRqpNHMURcbNmikMkahySYsNJuHw2MXR2P8q9zxty";
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract Round
+;;
+
+((slice, int, cell, int), int) $Round$_contract_router_internal((slice, int, cell, int) self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive Join message
+    if (op == 1719766261) {
+        var msg = in_msg~$Join$_load();
+        self~$Round$_internal_binary_Join(msg);
+        return (self, true);
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "New" message
+        if (text_op == 0x5eac5dfca94b966759e4c199ed74ce7ad8f058d2fc66be491b1068968013b138) {
+            self~$Round$_internal_text_5eac5dfca94b966759e4c199ed74ce7ad8f058d2fc66be491b1068968013b138();
+            return (self, true);
+        }
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $Round$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$Round$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $Round$_contract_store(self);
+}

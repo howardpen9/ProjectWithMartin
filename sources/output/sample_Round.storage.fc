@@ -1,0 +1,70 @@
+;;
+;; Type: SendParameters
+;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
+;;
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce(slice to, int value, int mode, int bounce) inline {
+    return (bounce, to, value, mode, null(), null(), null());
+}
+
+;;
+;; Type: Join
+;; Header: 0x66818cf5
+;; TLB: join#66818cf5 participator:address = Join
+;;
+
+(slice, ((slice))) $Join$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1719766261);
+    var v'participator = sc_0~__tact_load_address();
+    return (sc_0, (v'participator));
+}
+
+;;
+;; Type: Round
+;;
+
+builder $Round$_store(builder build_0, (slice, int, cell, int) v) inline {
+    var (v'source_address, v'round, v'user_list, v'balance) = v;
+    build_0 = __tact_store_address(build_0, v'source_address);
+    build_0 = build_0.store_uint(v'round, 32);
+    build_0 = build_0.store_dict(v'user_list);
+    build_0 = build_0.store_coins(v'balance);
+    return build_0;
+}
+
+(slice, ((slice, int, cell, int))) $Round$_load(slice sc_0) inline {
+    var v'source_address = sc_0~__tact_load_address();
+    var v'round = sc_0~load_uint(32);
+    var v'user_list = sc_0~load_dict();
+    var v'balance = sc_0~load_coins();
+    return (sc_0, (v'source_address, v'round, v'user_list, v'balance));
+}
+
+(slice, ((int, slice))) $Round$init$_load(slice sc_0) inline {
+    var v'_round = sc_0~load_int(257);
+    var v'_contract = sc_0~__tact_load_address();
+    return (sc_0, (v'_round, v'_contract));
+}
+
+(slice, int, cell, int) $Round$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$Round$_load();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        (int _round, slice _contract) = $sc~$Round$init$_load();
+        $sc.end_parse();
+        return $Round$_contract_init(_round, _contract);
+    }
+}
+
+() $Round$_contract_store((slice, int, cell, int) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = $Round$_store(b, v);
+    set_data(b.end_cell());
+}

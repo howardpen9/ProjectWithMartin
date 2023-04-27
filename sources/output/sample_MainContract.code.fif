@@ -1,0 +1,609 @@
+PROGRAM{
+  DECLPROC __tact_verify_address
+  DECLPROC __tact_load_address
+  DECLPROC __tact_store_address
+  DECLPROC __tact_create_address
+  DECLPROC __tact_compute_contract_address
+  DECLPROC __tact_my_balance
+  DECLPROC __tact_not_null
+  DECLPROC __tact_context_get
+  DECLPROC __tact_context_get_sender
+  DECLPROC __tact_store_bool
+  DECLPROC __tact_slice_eq_bits
+  DECLPROC __tact_dict_set_code
+  DECLPROC __tact_dict_get_code
+  DECLPROC $Deploy$_load
+  DECLPROC $DeployOk$_store
+  DECLPROC $DeployOk$_store_cell
+  DECLPROC $Join$_store
+  DECLPROC $Join$_store_cell
+  DECLPROC $MainContract$_store
+  DECLPROC $MainContract$_load
+  DECLPROC $StateInit$_not_null
+  DECLPROC $ContractData$_to_external
+  DECLPROC $MainContract$init$_load
+  DECLPROC $Round$init$_store
+  DECLPROC $MainContract$_contract_init
+  DECLPROC $MainContract$_contract_load
+  DECLPROC $MainContract$_contract_store
+  DECLPROC $global_contractAddress
+  DECLPROC $global_send
+  DECLPROC $MainContract$_fun_msgValue
+  DECLPROC $Round$_init_child
+  DECLPROC $MainContract$_fun_get_round_contract_address
+  DECLPROC $ContractData$_constructor_round_id_current_round_address
+  DECLPROC $MainContract$_fun_get_current_data
+  DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
+  DECLPROC $MainContract$_fun_forward
+  DECLPROC $MainContract$_fun_notify
+  DECLPROC $SendParameters$_constructor_to_body_value_mode_code_data
+  DECLPROC $Join$_constructor_participator
+  DECLPROC $SendParameters$_constructor_to_body_value_mode
+  DECLPROC $DeployOk$_constructor_queryId
+  DECLPROC $MainContract$_internal_text_755195fb3bdefd4537251986e85bd1fbe91507f6c82d9e3f67ffca97b508bd04
+  DECLPROC $MainContract$_internal_text_5eac5dfca94b966759e4c199ed74ce7ad8f058d2fc66be491b1068968013b138
+  DECLPROC $MainContract$_internal_binary_Deploy
+  77297 DECLMETHOD %get_round_contract_address
+  80048 DECLMETHOD %get_current_data
+  113617 DECLMETHOD supported_interfaces
+  121275 DECLMETHOD get_abi_ipfs
+  115390 DECLMETHOD lazy_deployment_completed
+  DECLPROC $MainContract$_contract_router_internal
+  DECLPROC recv_internal
+  DECLGLOBVAR __tact_context
+  DECLGLOBVAR __tact_context_sender
+  DECLGLOBVAR __tact_context_sys
+  DECLGLOBVAR __tact_randomized
+  __tact_verify_address PROCINLINE:<{
+    DUP
+    SBITS
+    267 PUSHINT
+    EQUAL
+    136 THROWIFNOT
+    DUP
+    11 PLDU
+    DUP
+    1279 PUSHINT
+    EQUAL
+    137 THROWIF
+    10 PUSHPOW2
+    EQUAL
+    136 THROWIFNOT
+  }>
+  __tact_load_address PROCINLINE:<{
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+  }>
+  __tact_store_address PROCINLINE:<{
+    __tact_verify_address INLINECALLDICT
+    STSLICER
+  }>
+  __tact_create_address PROCINLINE:<{
+    NEWC
+    2 PUSHINT
+    SWAP
+    2 STU
+    0 PUSHINT
+    SWAP
+    1 STU
+    s1 s2 XCHG
+    8 STI
+    256 STU
+    ENDC
+    CTOS
+    __tact_verify_address INLINECALLDICT
+  }>
+  __tact_compute_contract_address PROCINLINE:<{
+    NEWC
+    0 PUSHINT
+    SWAP
+    2 STU
+    3 PUSHINT
+    SWAP
+    2 STU
+    0 PUSHINT
+    SWAP
+    1 STU
+    s1 s2 XCHG
+    STREF
+    STREF
+    ENDC
+    HASHCU
+    __tact_create_address INLINECALLDICT
+  }>
+  __tact_my_balance PROCINLINE:<{
+    BALANCE
+    FIRST
+  }>
+  __tact_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+  }>
+  __tact_context_get PROCINLINE:<{
+    __tact_context GETGLOB
+    4 UNTUPLE
+  }>
+  __tact_context_get_sender PROCINLINE:<{
+    __tact_context_sender GETGLOB
+  }>
+  __tact_store_bool PROCINLINE:<{
+    SWAP
+    1 STI
+  }>
+  __tact_slice_eq_bits PROCINLINE:<{
+    SDEQ
+  }>
+  __tact_dict_set_code PROCINLINE:<{
+    s0 s2 XCHG
+    16 PUSHINT
+    DICTUSETREF
+  }>
+  __tact_dict_get_code PROCINLINE:<{
+    SWAP
+    16 PUSHINT
+    DICTUGETREF
+    NULLSWAPIFNOT
+    135 THROWIFNOT
+  }>
+  $Deploy$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    2490013878 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    SWAP
+  }>
+  $DeployOk$_store PROCINLINE:<{
+    2952335191 PUSHINT
+    ROT
+    32 STU
+    64 STU
+  }>
+  $DeployOk$_store_cell PROCINLINE:<{
+    NEWC
+    SWAP
+    $DeployOk$_store INLINECALLDICT
+    ENDC
+  }>
+  $Join$_store PROCINLINE:<{
+    1719766261 PUSHINT
+    ROT
+    32 STU
+    SWAP
+    __tact_store_address INLINECALLDICT
+  }>
+  $Join$_store_cell PROCINLINE:<{
+    NEWC
+    SWAP
+    $Join$_store INLINECALLDICT
+    ENDC
+  }>
+  $MainContract$_store PROCINLINE:<{
+    -ROT
+    __tact_store_address INLINECALLDICT
+    32 STU
+  }>
+  $MainContract$_load PROCINLINE:<{
+    __tact_load_address INLINECALLDICT
+    SWAP
+    32 LDU
+    -ROT
+  }>
+  $StateInit$_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+    2 UNTUPLE
+  }>
+  $ContractData$_to_external PROCINLINE:<{
+  }>
+  $MainContract$init$_load PROCINLINE:<{
+    __tact_load_address INLINECALLDICT
+  }>
+  $Round$init$_store PROCINLINE:<{
+    s0 s2 XCHG
+    257 PUSHINT
+    STIX
+    SWAP
+    __tact_store_address INLINECALLDICT
+  }>
+  $MainContract$_contract_init PROCREF:<{
+    0 PUSHINT
+  }>
+  $MainContract$_contract_load PROCREF:<{
+    c4 PUSH
+    CTOS
+    LDREF
+    SWAP
+    __tact_context_sys SETGLOB
+    1 LDI
+    SWAP
+    IFJMP:<{
+      $MainContract$_load INLINECALLDICT
+      1 2 BLKDROP2
+    }>
+    MYADDR
+    11 PLDU
+    10 PUSHPOW2
+    EQUAL
+    137 THROWIFNOT
+    $MainContract$init$_load INLINECALLDICT
+    SWAP
+    ENDS
+    $MainContract$_contract_init INLINECALLDICT
+  }>
+  $MainContract$_contract_store PROCINLINE:<{
+    NEWC
+    __tact_context_sys GETGLOB
+    SWAP
+    STREF
+    TRUE
+    SWAP
+    1 STI
+    -ROT
+    $MainContract$_store INLINECALLDICT
+    ENDC
+    c4 POP
+  }>
+  $global_contractAddress PROCINLINE:<{
+    0 PUSHINT
+    -ROT
+    __tact_compute_contract_address INLINECALLDICT
+  }>
+  $global_send PROCREF:<{
+    NEWC
+    1 PUSHINT
+    SWAP
+    2 STI
+    s0 s7 XCHG2
+    __tact_store_bool INLINECALLDICT
+    0 PUSHINT
+    SWAP
+    3 STI
+    s0 s5 XCHG2
+    __tact_store_address INLINECALLDICT
+    s0 s3 XCHG2
+    STGRAMS
+    0 PUSHINT
+    SWAP
+    105 STI
+    s3 PUSH
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+    }>ELSE<{
+      s4 PUSH
+      ISNULL
+      NOT
+    }>
+    IF:<{
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      NEWC
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        __tact_store_bool INLINECALLDICT
+        s0 s4 XCHG
+        __tact_not_null INLINECALLDICT
+        s0 s4 XCHG2
+        STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        __tact_store_bool INLINECALLDICT
+      }>
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        __tact_store_bool INLINECALLDICT
+        s0 s4 XCHG
+        __tact_not_null INLINECALLDICT
+        s0 s4 XCHG2
+        STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        __tact_store_bool INLINECALLDICT
+      }>
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      s0 s2 XCHG
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      s0 s2 XCHG
+      ENDC
+      ROT
+      STREF
+    }>ELSE<{
+      s3 POP
+      s3 POP
+      SWAP
+      FALSE
+      __tact_store_bool INLINECALLDICT
+    }>
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      SWAP
+      __tact_not_null INLINECALLDICT
+      SWAP
+      STREF
+    }>ELSE<{
+      NIP
+      FALSE
+      __tact_store_bool INLINECALLDICT
+    }>
+    ENDC
+    SWAP
+    SENDRAWMSG
+  }>
+  $MainContract$_fun_msgValue PROCREF:<{
+    __tact_my_balance INLINECALLDICT
+    OVER
+    SUB
+    30000000 PUSHINT
+    TUCK
+    MIN
+    SUB
+    30000000 PUSHINT
+    ADD
+    SUB
+  }>
+  $Round$_init_child PROCREF:<{
+    s0 s2 XCHG
+    CTOS
+    LDDICT
+    DROP
+    NEWDICT
+    SWAP
+    60274 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    SWAP
+    60274 PUSHINT
+    s2 PUSH
+    __tact_dict_set_code INLINECALLDICT
+    NEWC
+    SWAP
+    NEWC
+    STDICT
+    ENDC
+    SWAP
+    STREF
+    FALSE
+    SWAP
+    1 STI
+    s0 s0 s3 XCHG3
+    $Round$init$_store INLINECALLDICT
+    ENDC
+  }>
+  $MainContract$_fun_get_round_contract_address PROCREF:<{
+    __tact_context_sys GETGLOB
+    MYADDR
+    s1 s2 XCHG
+    $Round$_init_child INLINECALLDICT
+    $global_contractAddress INLINECALLDICT
+  }>
+  $ContractData$_constructor_round_id_current_round_address PROCINLINE:<{
+  }>
+  $MainContract$_fun_get_current_data PROCREF:<{
+    s1 s0 s0 PUSH3
+    s4 s3 s0 XC2PU
+    $MainContract$_fun_get_round_contract_address INLINECALLDICT
+    2 1 BLKDROP2
+    s1 s2 XCHG
+    $ContractData$_constructor_round_id_current_round_address INLINECALLDICT
+    s2 s3 XCHG
+  }>
+  $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
+  }>
+  $MainContract$_fun_forward PROCREF:<{
+    PUSHNULL
+    PUSHNULL
+    s2 PUSH
+    ISNULL
+    NOT
+    IF:<{
+      2DROP
+      $StateInit$_not_null INLINECALLDICT
+      SWAP
+    }>ELSE<{
+      s2 POP
+    }>
+    s2 s4 XCHG
+    0 PUSHINT
+    s0 s3 XCHG
+    s0 s4 XCHG
+    66 PUSHINT
+    s2 s3 XCHG2
+    $SendParameters$_constructor_bounce_to_value_mode_body_code_data INLINECALLDICT
+    $global_send INLINECALLDICT
+  }>
+  $MainContract$_fun_notify PROCINLINE:<{
+    __tact_context_get_sender INLINECALLDICT
+    SWAP
+    FALSE
+    PUSHNULL
+    $MainContract$_fun_forward INLINECALLDICT
+  }>
+  $SendParameters$_constructor_to_body_value_mode_code_data PROCINLINE:<{
+    TRUE
+    s0 s6 XCHG
+    s5 s5 s5 XCHG3
+  }>
+  $Join$_constructor_participator PROCINLINE:<{
+  }>
+  $SendParameters$_constructor_to_body_value_mode PROCINLINE:<{
+    TRUE
+    s0 s4 XCHG
+    s0 s3 XCHG
+    PUSHNULL
+    PUSHNULL
+  }>
+  $DeployOk$_constructor_queryId PROCINLINE:<{
+  }>
+  $MainContract$_internal_text_755195fb3bdefd4537251986e85bd1fbe91507f6c82d9e3f67ffca97b508bd04 PROCINLINE:<{
+    __tact_context_get INLINECALLDICT
+    DROP
+    s2 POP
+    __tact_context_sys GETGLOB
+    MYADDR
+    s4 s(-1) PUXC
+    $Round$_init_child INLINECALLDICT
+    2DUP
+    $global_contractAddress INLINECALLDICT
+    s0 s3 XCHG
+    $Join$_constructor_participator INLINECALLDICT
+    $Join$_store_cell INLINECALLDICT
+    s6 s5 s4 XCHG3
+    $MainContract$_fun_msgValue INLINECALLDICT
+    s3 s4 XCHG
+    s0 s2 XCHG
+    2 PUSHINT
+    s0 s7 s6 XCHG3
+    $SendParameters$_constructor_to_body_value_mode_code_data INLINECALLDICT
+    $global_send INLINECALLDICT
+  }>
+  $MainContract$_internal_text_5eac5dfca94b966759e4c199ed74ce7ad8f058d2fc66be491b1068968013b138 PROCINLINE:<{
+    __tact_context_get INLINECALLDICT
+    s2 s3 XCHG
+    3 BLKDROP
+    s2 PUSH
+    3734 PUSHINT
+    s0 s2 XCHG
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    DUP
+    $MainContract$_fun_get_round_contract_address INLINECALLDICT
+    B{b5ee9c7241010101000900000e000000004e6577f1034d78} B>boc PUSHREF
+    0 PUSHINT
+    66 PUSHINT
+    $SendParameters$_constructor_to_body_value_mode INLINECALLDICT
+    $global_send INLINECALLDICT
+    INC
+  }>
+  $MainContract$_internal_binary_Deploy PROCINLINE:<{
+    $DeployOk$_constructor_queryId INLINECALLDICT
+    $DeployOk$_store_cell INLINECALLDICT
+    $MainContract$_fun_notify INLINECALLDICT
+  }>
+  %get_round_contract_address PROC:<{
+    $MainContract$_contract_load INLINECALLDICT
+    ROT
+    $MainContract$_fun_get_round_contract_address INLINECALLDICT
+    2 1 BLKDROP2
+  }>
+  %get_current_data PROC:<{
+    $MainContract$_contract_load INLINECALLDICT
+    $MainContract$_fun_get_current_data INLINECALLDICT
+    2 2 BLKDROP2
+    $ContractData$_to_external INLINECALLDICT
+  }>
+  supported_interfaces PROC:<{
+    123515602279859691144772641439386770278 PUSHINT
+    209801025412363888721030803524359905849 PUSHINT
+    42980537499636128163026532310500881091 PUSHINT
+    209474421377847335869795010607481022628 PUSHINT
+  }>
+  get_abi_ipfs PROC:<{
+    x{697066733a2f2f516d613177315841616b534e554e70776b4a446a56317a4c355a7145736b416f444b7643424e614568574a345876} PUSHSLICE
+  }>
+  lazy_deployment_completed PROC:<{
+    c4 PUSH
+    CTOS
+    1 LDI
+    SWAP
+  }>
+  $MainContract$_contract_router_internal PROCREF:<{
+    c2 SAVE
+    SAMEALTSAVE
+    SWAP
+    IFJMP:<{
+      DROP
+      TRUE
+    }>
+    0 PUSHINT
+    OVER
+    SBITS
+    31 GTINT
+    IF:<{
+      DROP
+      DUP
+      32 PLDU
+    }>
+    DUP
+    2490013878 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $Deploy$_load INLINECALLDICT
+      NIP
+      $MainContract$_internal_binary_Deploy INLINECALLDICT
+      TRUE
+    }>
+    0 EQINT
+    IF:<{
+      HASHSU
+      DUP
+      53064753029946659520363657819272253550906475966759529640387650127602133810436 PUSHINT
+      EQUAL
+      IFJMP:<{
+        DROP
+        $MainContract$_internal_text_755195fb3bdefd4537251986e85bd1fbe91507f6c82d9e3f67ffca97b508bd04 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      42821954136114606448062496821485017255497735714033589296856739540194724917560 PUSHINT
+      EQUAL
+      IFJMP:<{
+        $MainContract$_internal_text_5eac5dfca94b966759e4c199ed74ce7ad8f058d2fc66be491b1068968013b138 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+    }>ELSE<{
+      DROP
+    }>
+    FALSE
+  }>
+  recv_internal PROC:<{
+    SWAP
+    CTOS
+    4 LDU
+    SWAP
+    1 PUSHINT
+    AND
+    NEGATE
+    SWAP
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+    s0 s4 s2 PUXCPU
+    s0 s3 XCHG
+    4 TUPLE
+    __tact_context SETGLOB
+    s0 s2 XCHG
+    __tact_context_sender SETGLOB
+    $MainContract$_contract_load INLINECALLDICT
+    2SWAP
+    $MainContract$_contract_router_internal INLINECALLDICT
+    130 THROWIFNOT
+    $MainContract$_contract_store INLINECALLDICT
+  }>
+}END>c

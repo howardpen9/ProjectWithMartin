@@ -1,9 +1,9 @@
 # TACT Compilation Report
-Contract: SampleTactContract
-BOC Size: 822 bytes
+Contract: MainContract
+BOC Size: 1222 bytes
 
 # Types
-Total Types: 7
+Total Types: 9
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -33,10 +33,21 @@ Signature: `FactoryDeploy{queryId:uint64,cashback:address}`
 TLB: `add#87d43ac2 amount:uint32 = Add`
 Signature: `Add{amount:uint32}`
 
-# Get Methods
-Total Get Methods: 1
+## ContractData
+TLB: `_ round_id:int257 current_round_address:address = ContractData`
+Signature: `ContractData{round_id:int257,current_round_address:address}`
 
-## counter
+## Join
+TLB: `join#66818cf5 participator:address = Join`
+Signature: `Join{participator:address}`
+
+# Get Methods
+Total Get Methods: 2
+
+## get_round_contract_address
+Argument: round_id
+
+## get_current_data
 
 # Error Codes
 2: Stack undeflow
@@ -63,4 +74,6 @@ Total Get Methods: 1
 135: Code of a contract was not found
 136: Invalid address
 137: Masterchain support is not enabled for this contract
-4429: Invalid sender
+3734: Not Owner
+18265: Already store
+55192: Not from main contract

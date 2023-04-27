@@ -1,0 +1,167 @@
+#pragma version =0.4.3;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "sample_MainContract.headers.fc";
+#include "sample_MainContract.stdlib.fc";
+#include "sample_MainContract.constants.fc";
+#include "sample_MainContract.storage.fc";
+
+;;
+;; Contract MainContract functions
+;;
+
+(slice, int) $MainContract$_contract_init(slice $owner) impure inline_ref {
+    var (($self'owner, $self'round_id)) = (null(), null());
+    $self'owner = $owner;
+    $self'round_id = 0;
+    return ($self'owner, $self'round_id);
+}
+
+((slice, int), int) $MainContract$_fun_msgValue((slice, int) $self, int $msgValue) impure inline_ref {
+    var (($self'owner, $self'round_id)) = $self;
+    int $tonBalanceBeforeMsg = (__tact_my_balance() - $msgValue);
+    int $storageFee = (30000000 - min($tonBalanceBeforeMsg, 30000000));
+    $msgValue = ($msgValue - ($storageFee + 30000000));
+    return (($self'owner, $self'round_id), $msgValue);
+}
+
+((slice, int), slice) $MainContract$_fun_get_round_contract_address((slice, int) $self, int $round_id) impure inline_ref {
+    var (($self'owner, $self'round_id)) = $self;
+    var ($init'code, $init'data) = $Round$_init_child(__tact_context_sys, $round_id, my_address());
+    return (($self'owner, $self'round_id), $global_contractAddress(($init'code, $init'data)));
+}
+
+((slice, int), (int, slice)) $MainContract$_fun_get_current_data((slice, int) $self) impure inline_ref {
+    var (($self'owner, $self'round_id)) = $self;
+    return (($self'owner, $self'round_id), $ContractData$_constructor_round_id_current_round_address($self'round_id, ($self'owner, $self'round_id)~$MainContract$_fun_get_round_contract_address($self'round_id)));
+}
+
+;;
+;; Receivers of a Contract MainContract
+;;
+
+((slice, int), ()) $MainContract$_internal_text_755195fb3bdefd4537251986e85bd1fbe91507f6c82d9e3f67ffca97b508bd04((slice, int) $self) impure inline {
+    var ($self'owner, $self'round_id) = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    var ($init'code, $init'data) = $Round$_init_child(__tact_context_sys, $self'round_id, my_address());
+    $global_send($SendParameters$_constructor_to_body_value_mode_code_data($global_contractAddress(($init'code, $init'data)), $Join$_store_cell($Join$_constructor_participator($ctx'sender)), ($self'owner, $self'round_id)~$MainContract$_fun_msgValue($ctx'value), 2, $init'code, $init'data));
+    return (($self'owner, $self'round_id), ());
+}
+
+((slice, int), ()) $MainContract$_internal_text_5eac5dfca94b966759e4c199ed74ce7ad8f058d2fc66be491b1068968013b138((slice, int) $self) impure inline {
+    var ($self'owner, $self'round_id) = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(3734, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
+    $global_send($SendParameters$_constructor_to_body_value_mode(($self'owner, $self'round_id)~$MainContract$_fun_get_round_contract_address($self'round_id), __gen_cell_comment_5eac5dfca94b966759e4c199ed74ce7ad8f058d2fc66be491b1068968013b138(), 0, (64 + 2)));
+    $self'round_id = ($self'round_id + 1);
+    return (($self'owner, $self'round_id), ());
+}
+
+(((slice, int)), ()) $MainContract$_internal_binary_Deploy((slice, int) $self, (int) $deploy) impure inline {
+    var ($self'owner, $self'round_id) = $self;
+    var ($deploy'queryId) = $deploy;
+    ($self'owner, $self'round_id)~$MainContract$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'owner, $self'round_id), ());
+}
+
+;;
+;; Get methods of a Contract MainContract
+;;
+
+_ %get_round_contract_address(int $$round_id) method_id(77297) {
+    int $round_id = $$round_id;
+    var self = $MainContract$_contract_load();
+    var res = self~$MainContract$_fun_get_round_contract_address($round_id);
+    return res;
+}
+
+_ %get_current_data() method_id(80048) {
+    var self = $MainContract$_contract_load();
+    var res = self~$MainContract$_fun_get_current_data();
+    return $ContractData$_to_external(res);
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128,
+        "org.ton.deploy.lazy.v0"H >> 128,
+        "org.ton.chain.workchain.v0"H >> 128
+    );
+}
+
+_ get_abi_ipfs() method_id {
+    return "ipfs://Qma1w1XAakSNUNpwkJDjV1zL5ZqEskAoDKvCBNaEhWJ4Xv";
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract MainContract
+;;
+
+((slice, int), int) $MainContract$_contract_router_internal((slice, int) self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive Deploy message
+    if (op == 2490013878) {
+        var msg = in_msg~$Deploy$_load();
+        self~$MainContract$_internal_binary_Deploy(msg);
+        return (self, true);
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "Join" message
+        if (text_op == 0x755195fb3bdefd4537251986e85bd1fbe91507f6c82d9e3f67ffca97b508bd04) {
+            self~$MainContract$_internal_text_755195fb3bdefd4537251986e85bd1fbe91507f6c82d9e3f67ffca97b508bd04();
+            return (self, true);
+        }
+        
+        ;; Receive "New" message
+        if (text_op == 0x5eac5dfca94b966759e4c199ed74ce7ad8f058d2fc66be491b1068968013b138) {
+            self~$MainContract$_internal_text_5eac5dfca94b966759e4c199ed74ce7ad8f058d2fc66be491b1068968013b138();
+            return (self, true);
+        }
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $MainContract$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$MainContract$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $MainContract$_contract_store(self);
+}

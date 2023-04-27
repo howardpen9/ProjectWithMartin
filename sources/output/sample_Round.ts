@@ -360,30 +360,119 @@ function dictValueParserAdd(): DictionaryValue<Add> {
     }
 }
 
- type SampleTactContract_init_args = {
-    $$type: 'SampleTactContract_init_args';
-    owner: Address;
+export type ContractData = {
+    $$type: 'ContractData';
+    round_id: bigint;
+    current_round_address: Address;
 }
 
-function initSampleTactContract_init_args(src: SampleTactContract_init_args) {
+export function storeContractData(src: ContractData) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeAddress(src.owner);
+        b_0.storeInt(src.round_id, 257);
+        b_0.storeAddress(src.current_round_address);
     };
 }
 
-async function SampleTactContract_init(owner: Address) {
-    const __code = Cell.fromBase64('te6ccgECEwEAAyoAART/APSkE/S88sgLAQIBYgIDAtTQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxa2zzy4ILI+EMBzH8BygBZWSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFssfye1UDgQCAVgKCwPg7aLt+wGSMH/gcCHXScIflTAg1wsf3iCCEIfUOsK6jpUw0x8BghCH1DrCuvLggdMfATHbPH/gIIIQlGqYtrqOqDDTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH/gwACRMOMNcAkFBgE6bW0ibrOZWyBu8tCAbyIBkTLiECRwAwSAQlAj2zwHAVz5AYLwxPjXIxLt/e9be+x4M727Fi0VEb14qRKu0PJjevZVcq66joZx2zx/2zHgCQHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAIAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMACT4QW8kECNfAyOBEU0CxwXy9KACASAMDQIBSBESAhG3Qxtnm2eNhDAODwCVt3owTgudh6ullc9j0J2HOslQo2zQThO6xqWlbI+WZFp15b++LEcwTgQKuANwDOxymcsHVcjktlhwThOy6ctWadluZ0HSzbKM3RSQAcDtRNDUAfhj0gABjiX6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdMfWWwS4Pgo1wsKgwm68uCJ+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHR2zwQAAIgAAJwABGwr7tRNDSAAGAAdbJu40NWlwZnM6Ly9RbVl6UUhOMm42RDF6RUJ1SnlCbkpybm1oUVd6Z1pXaGFOcHBtd3NBRlc0a05pgg');
-    const __system = Cell.fromBase64('te6cckECFQEAAzQAAQHAAQEFoebTAgEU/wD0pBP0vPLICwMCAWIMBAIBWAgFAgFIBwYAdbJu40NWlwZnM6Ly9RbVl6UUhOMm42RDF6RUJ1SnlCbkpybm1oUVd6Z1pXaGFOcHBtd3NBRlc0a05pggABGwr7tRNDSAAGACASAKCQCVt3owTgudh6ullc9j0J2HOslQo2zQThO6xqWlbI+WZFp15b++LEcwTgQKuANwDOxymcsHVcjktlhwThOy6ctWadluZ0HSzbKM3RSQAhG3Qxtnm2eNhDATCwACIALU0AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8Wts88uCCyPhDAcx/AcoAWVkg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbLH8ntVBMNA+Dtou37AZIwf+BwIddJwh+VMCDXCx/eIIIQh9Q6wrqOlTDTHwGCEIfUOsK68uCB0x8BMds8f+AgghCUapi2uo6oMNMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8f+DAAJEw4w1wEg8OAVz5AYLwxPjXIxLt/e9be+x4M727Fi0VEb14qRKu0PJjevZVcq66joZx2zx/2zHgEgE6bW0ibrOZWyBu8tCAbyIBkTLiECRwAwSAQlAj2zwQAcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7ABEAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwAJPhBbyQQI18DI4ERTQLHBfL0oAHA7UTQ1AH4Y9IAAY4l+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHTH1lsEuD4KNcLCoMJuvLgifpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0ds8FAACcO2md3Q=');
+export function loadContractData(slice: Slice) {
+    let sc_0 = slice;
+    let _round_id = sc_0.loadIntBig(257);
+    let _current_round_address = sc_0.loadAddress();
+    return { $$type: 'ContractData' as const, round_id: _round_id, current_round_address: _current_round_address };
+}
+
+function loadTupleContractData(source: TupleReader) {
+    let _round_id = source.readBigNumber();
+    let _current_round_address = source.readAddress();
+    return { $$type: 'ContractData' as const, round_id: _round_id, current_round_address: _current_round_address };
+}
+
+function storeTupleContractData(source: ContractData) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.round_id);
+    builder.writeAddress(source.current_round_address);
+    return builder.build();
+}
+
+function dictValueParserContractData(): DictionaryValue<ContractData> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeRef(beginCell().store(storeContractData(src)).endCell());
+        },
+        parse: (src) => {
+            return loadContractData(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type Join = {
+    $$type: 'Join';
+    participator: Address;
+}
+
+export function storeJoin(src: Join) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(1719766261, 32);
+        b_0.storeAddress(src.participator);
+    };
+}
+
+export function loadJoin(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 1719766261) { throw Error('Invalid prefix'); }
+    let _participator = sc_0.loadAddress();
+    return { $$type: 'Join' as const, participator: _participator };
+}
+
+function loadTupleJoin(source: TupleReader) {
+    let _participator = source.readAddress();
+    return { $$type: 'Join' as const, participator: _participator };
+}
+
+function storeTupleJoin(source: Join) {
+    let builder = new TupleBuilder();
+    builder.writeAddress(source.participator);
+    return builder.build();
+}
+
+function dictValueParserJoin(): DictionaryValue<Join> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeRef(beginCell().store(storeJoin(src)).endCell());
+        },
+        parse: (src) => {
+            return loadJoin(src.loadRef().beginParse());
+        }
+    }
+}
+
+ type Round_init_args = {
+    $$type: 'Round_init_args';
+    _round: bigint;
+    _contract: Address;
+}
+
+function initRound_init_args(src: Round_init_args) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeInt(src._round, 257);
+        b_0.storeAddress(src._contract);
+    };
+}
+
+async function Round_init(_round: bigint, _contract: Address) {
+    const __code = Cell.fromBase64('te6ccgECFwEAA9cAART/APSkE/S88sgLAQIBYgIDAubQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFssfEvQAAfoCye1UFAQCASALDAKs7aLt+wGSMH/gcCHXScIflTAg1wsf3iCCEGaBjPW6jq4w0x8BghBmgYz1uvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4Igx4MAAkTDjDXAFBgPG+EFvJIIA15hTk8cF8vSBR1kngQELJ4EBAUEz9ApvoZQB1wAwkltt4m7y9FRzISPbPEQwUkTbPKAQRl4yUFXbPFAFoYEBC1QQZoEBASFulVtZ9FkwmMgBzwBBM/RB4lA0oBN/BwcIAZT5AYLwXqxd/KlLlmdZ5MGZ7XTOetjwWNL8Zr5JGxBoloATsTi6jqL4QW8kECNfAySCANeYAscF8vQjcIEAgnBVIG1tbds8f9sx4AkAZGwx+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiDD6ADFx1yH6ADH6ADCnA6sAACz4J28QIaGCCcnDgGa2CKGCCcnDgKChAcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAoAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwCEb1sztnm2eNiDBQNAgEgDg8AAiEAlbu9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSAIBIBARAgEgEhMCEbVUm2ebZ42IMBQVABGwr7tRNDSAAGAAdbJu40NWlwZnM6Ly9RbVdLQVpScXBOSE1VUmNiTm1pa01rYWh5U1lzTkp1SHcyTVhSMlA4cTl6eHR5ggAdjtRNDUAfhj0gABjir6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdMf9AT6AFUwbBTg+CjXCwqDCbry4ImBAQHXAPpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSAtEB2zwWAAIgAAYBbXA=');
+    const __system = Cell.fromBase64('te6cckECGQEAA+EAAQHAAQEFodblAgEU/wD0pBP0vPLICwMCAWIPBAIBIA0FAgEgDAYCASAJBwIRtVSbZ5tnjYgwFwgAAiACASALCgB1sm7jQ1aXBmczovL1FtV0tBWlJxcE5ITVVSY2JObWlrTWthaHlTWXNOSnVIdzJNWFIyUDhxOXp4dHmCAAEbCvu1E0NIAAYACVu70YJwXOw9XSyuex6E7DnWSoUbZoJwndY1LStkfLMi068t/fFiOYJwIFXAG4BnY5TOWDquRyWyw4JwnZdOWrNOy3M6DpZtlGbopIAhG9bM7Z5tnjYgwXDgACIQLm0AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRPbPPLggsj4QwHMfwHKAFUwUEMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbLHxL0AAH6AsntVBcQAqztou37AZIwf+BwIddJwh+VMCDXCx/eIIIQZoGM9bqOrjDTHwGCEGaBjPW68uCB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiDHgwACRMOMNcBQRAZT5AYLwXqxd/KlLlmdZ5MGZ7XTOetjwWNL8Zr5JGxBoloATsTi6jqL4QW8kECNfAySCANeYAscF8vQjcIEAgnBVIG1tbds8f9sx4BIByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsAEwCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAPG+EFvJIIA15hTk8cF8vSBR1kngQELJ4EBAUEz9ApvoZQB1wAwkltt4m7y9FRzISPbPEQwUkTbPKAQRl4yUFXbPFAFoYEBC1QQZoEBASFulVtZ9FkwmMgBzwBBM/RB4lA0oBN/FhYVACz4J28QIaGCCcnDgGa2CKGCCcnDgKChAGRsMfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4Igw+gAxcdch+gAx+gAwpwOrAAHY7UTQ1AH4Y9IAAY4q+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHTH/QE+gBVMGwU4Pgo1wsKgwm68uCJgQEB1wD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIEgLRAds8GAAGAW1wLBc0Kw==');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
-    initSampleTactContract_init_args({ $$type: 'SampleTactContract_init_args', owner })(builder);
+    initRound_init_args({ $$type: 'Round_init_args', _round, _contract })(builder);
     const __data = builder.endCell();
     return { code: __code, data: __data };
 }
 
-const SampleTactContract_errors: { [key: number]: { message: string } } = {
+const Round_errors: { [key: number]: { message: string } } = {
     2: { message: `Stack undeflow` },
     3: { message: `Stack overflow` },
     4: { message: `Integer overflow` },
@@ -408,29 +497,31 @@ const SampleTactContract_errors: { [key: number]: { message: string } } = {
     135: { message: `Code of a contract was not found` },
     136: { message: `Invalid address` },
     137: { message: `Masterchain support is not enabled for this contract` },
-    4429: { message: `Invalid sender` },
+    3734: { message: `Not Owner` },
+    18265: { message: `Already store` },
+    55192: { message: `Not from main contract` },
 }
 
-export class SampleTactContract implements Contract {
+export class Round implements Contract {
     
-    static async init(owner: Address) {
-        return await SampleTactContract_init(owner);
+    static async init(_round: bigint, _contract: Address) {
+        return await Round_init(_round, _contract);
     }
     
-    static async fromInit(owner: Address) {
-        const init = await SampleTactContract_init(owner);
+    static async fromInit(_round: bigint, _contract: Address) {
+        const init = await Round_init(_round, _contract);
         const address = contractAddress(0, init);
-        return new SampleTactContract(address, init);
+        return new Round(address, init);
     }
     
     static fromAddress(address: Address) {
-        return new SampleTactContract(address);
+        return new Round(address);
     }
     
     readonly address: Address; 
     readonly init?: { code: Cell, data: Cell };
     readonly abi: ContractABI = {
-        errors: SampleTactContract_errors
+        errors: Round_errors
     };
     
     private constructor(address: Address, init?: { code: Cell, data: Cell }) {
@@ -438,17 +529,14 @@ export class SampleTactContract implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: Add | 'increment' | Deploy) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: Join | 'New') {
         
         let body: Cell | null = null;
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Add') {
-            body = beginCell().store(storeAdd(message)).endCell();
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Join') {
+            body = beginCell().store(storeJoin(message)).endCell();
         }
-        if (message === 'increment') {
+        if (message === 'New') {
             body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
-        }
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Deploy') {
-            body = beginCell().store(storeDeploy(message)).endCell();
         }
         if (body === null) { throw new Error('Invalid message type'); }
         
@@ -456,9 +544,16 @@ export class SampleTactContract implements Contract {
         
     }
     
-    async getCounter(provider: ContractProvider) {
+    async getGetUserRecord(provider: ContractProvider) {
         let builder = new TupleBuilder();
-        let source = (await provider.get('counter', builder.build())).stack;
+        let source = (await provider.get('get_user_record', builder.build())).stack;
+        let result = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
+        return result;
+    }
+    
+    async getBalanceReward(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('balance_reward', builder.build())).stack;
         let result = source.readBigNumber();
         return result;
     }
